@@ -1,10 +1,17 @@
-import { config } from "dotenv";
+import express from "express";
+import dotenv from "dotenv";
 import { connectToCluster } from "./utils/database.js";
 
-config();
-console.log(process.env.DB_URI);
+dotenv.config();
 
-connectToCluster(process.env.DB_URI)
+const app = express();
+
+const PORT = process.env.PORT || 4000;
+
+connectToCluster(process.env.MONGODB_URI, (mongoClient) => {
+  console.log(mongoClient);
+  app.listen(PORT);
+})
   .then((result) => {
     console.log("Connection is done");
   })
