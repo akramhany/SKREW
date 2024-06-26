@@ -17,5 +17,6 @@
   },
   "author": "Akram",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "type": "module"
 }
