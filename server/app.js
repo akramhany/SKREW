@@ -23,6 +23,6 @@ process.on("SIGINT", async () => {
   }
 });
 
-db.connect().then((res) => {
+db.connect().then(() => {
   app.listen(PORT);
 });
