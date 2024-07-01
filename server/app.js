@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import { connectToCluster } from "./utils/database.js";
+import Database from "./utils/database.js";
+import Product from "./models/products.js";
 
 dotenv.config();
 
@@ -8,13 +9,20 @@ const app = express();
 
 const PORT = process.env.PORT || 4000;
 
-connectToCluster(process.env.MONGODB_URI, (mongoClient) => {
-  console.log(mongoClient);
+const db = new Database(process.env.MONGODB_URI, {
+  dbName: "test",
+});
+
+process.on("SIGINT", async () => {
+  try {
+    await db.disconnect();
+    process.exit(0);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
+});
+
+db.connect().then((res) => {
   app.listen(PORT);
-})
-  .then((result) => {
-    console.log("Connection is done");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+});

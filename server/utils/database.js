@@ -1,18 +1,31 @@
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
-export async function connectToCluster(uri, cb) {
-  let mongoClient;
+export default class Database {
+  constructor(uri, options) {
+    this.uri = uri;
+    this.options = options;
+  }
 
-  try {
-    mongoClient = new MongoClient(uri);
-    console.log("Connecting to MongoDB Atlas cluster...");
-    await mongoClient.connect();
-    console.log("Successfully connected to MongoDB Atlas!");
-    cb(mongoClient);
-
-    return mongoClient;
-  } catch (error) {
-    console.error("Connection to MongoDB Atlas failed!", error);
-    process.exit();
+  async connect() {
+    try {
+      await mongoose.connect(this.uri, this.options);
+      console.log(
+        `Connected to database: ${mongoose.connection.db.databaseName}`,
+      );
+    } catch (err) {
+      console.error("Connection to MongoDB Atlas failed!", err);
+      process.exit();
+    }
+  }
+  async disconnect() {
+    try {
+      await mongoose.disconnect();
+      console.log(
+        `Disconnected from database: ${mongoose.connection.db.databaseName}`,
+      );
+    } catch (err) {
+      console.error("Disconnecting from MongoDB Atlas failed!", err);
+      process.exit();
+    }
   }
 }
