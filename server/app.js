@@ -1,7 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import Database from "./utils/database.js";
-import Product from "./models/products.js";
+import Player from "./models/player.js";
+import Game from "./models/game.js";
+import Deck from "./models/deck.js";
 
 dotenv.config();
 

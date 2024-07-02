@@ -15,4 +15,4 @@ const deckSchema = new Schema({
   ],
 });
 
-export default mongoose.Schema("Deck", deckSchema);
+export default mongoose.model("Deck", deckSchema);
